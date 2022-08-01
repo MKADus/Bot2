@@ -1,4 +1,4 @@
-TOKEN = '5413478825:AAFqZUDLdLFSkwMIm9DMqI-K8N6WSCCZEC0'
+TOKEN = ''
 
 dialog = {
     'привет': ['Привет!', '', '', ''],
