@@ -1,11 +1,20 @@
 # импорт необходимых модулей для работы
-from aiogram import Dispatcher, Bot, types
+import logging
+
+from aiogram import Bot, Dispatcher, types
 from aiogram.dispatcher.filters.state import StatesGroup, State
+from aiogram.types import User
 from aiogram.utils import executor
-from Bot_Alpha.config import TOKEN
+
 from Bot_Alpha import db_session
+from Bot_Alpha.config import TOKEN
 from Bot_Alpha.keyboard import function_button
-from Bot_Alpha.users import User
+import client
+
+logging.basicConfig(filename="sample.log", level=logging.INFO)
+log = logging.getLogger("ex")
+
+
 
 bot = Bot(token = TOKEN)
 
@@ -55,6 +64,17 @@ async def password(message: types.Message):
         await message.answer('Авторизация прошла успешно!')
         db_sess.add(user)
         db_sess.commit()
+
+        await SateBot.general.set()
+        else:
+        if db_session.create_session().query(User).filter(
+                User.name_id == str(message.from_user.id)).first().password == message.text:
+            log.exception("PASSWORD - good")
+            await message.answer('Авторизация прошла успешно')
+            await SateBot.general.set()
+        else:
+            log.info("PASSWORD - error")
+            await message.answer('Пароль неверный!\nПопробуйте еще раз')
 
         await SateBot.general.set()
     else:
